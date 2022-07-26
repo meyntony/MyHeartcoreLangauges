@@ -22,5 +22,5 @@ var welcomeMessage = service.Content.GetRoot(culture: selectedLanguageIsoCode).R
 Console.WriteLine(welcomeMessage);
 foreach (var language in allSupportedLangagues)
 {
-	Console.WriteLine($"ISO Code: {language.Key} = {language.Value}");
+	Console.WriteLine($"{language.Value}");
 }
