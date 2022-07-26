@@ -1,6 +1,10 @@
-﻿using MyHeartcoreLangauges;
+using MyHeartcoreLangauges;
+using System.Text;
+using Umbraco.Headless.Client.Net.Delivery;
 
 Dictionary<string, string> allLangaugesInLangaugeSpecificName = HeartcoreBusinessLogic.GetAllLangaugesInLangaugeSpecificName();
+
+Console.OutputEncoding = Encoding.UTF8;
 
 foreach (var language in allLangaugesInLangaugeSpecificName)
 { 
@@ -13,7 +17,9 @@ do {
 }while (!allLangaugesInLangaugeSpecificName.ContainsKey(selectedLanguageIsoCode));
 
 Dictionary<string, string> allSupportedLangagues = HeartcoreBusinessLogic.GetAllSupportedLangagues(selectedLanguageIsoCode);
-
+var service = new ContentDeliveryService(HeartcoreBusinessLogic.ProjectAlias);
+var welcomeMessage = service.Content.GetRoot(culture: selectedLanguageIsoCode).Result.First(n => n.ContentTypeAlias == "home").Properties.First(p => p.Key == "welcomeMessage").Value;
+Console.WriteLine(welcomeMessage);
 foreach (var language in allSupportedLangagues)
 {
 	Console.WriteLine($"ISO Code: {language.Key} = {language.Value}");
