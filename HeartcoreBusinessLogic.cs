@@ -26,13 +26,10 @@ namespace MyHeartcoreLangauges
 		{
 			var service = new ContentDeliveryService(ProjectAlias);
 			var languageLibraryNode = service.Content.GetRoot().Result.First(n => n.ContentTypeAlias == LanguageLibraryAlias);
-
-			var returnValue = new Dictionary<string, string>();
-			foreach (var language in service.Content.GetChildren(languageLibraryNode.Id, culture: selectedLanguageIsoCode).Result.Content.Items)
-			{
-				returnValue.Add(key: language.Properties.First(p => p.Key == ISOCodeAlias).Value.ToString(), value: language.Name);
-			}
-			return returnValue;
+			return service.Content.GetChildren(languageLibraryNode.Id, culture: selectedLanguageIsoCode).Result.Content.Items
+				.ToDictionary(
+				language => language.Properties.First(p => p.Key == ISOCodeAlias).Value.ToString() ?? "",
+				language => language.Name);
 		}
 	}
 }
